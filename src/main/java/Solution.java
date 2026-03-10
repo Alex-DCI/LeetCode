@@ -1,17 +1,21 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
 
 public class Solution {
     static void main() {
-
+        System.out.println(new Solution().isAnagram("car", "rat"));
     }
 
-    public boolean containsDuplicate(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int i: nums) {
-            if (set.contains(i)) return true;
-            set.add(i);
+    public boolean isAnagram(String s, String t) {
+        int length = s.length();
+        if (length != t.length()) return false;
+        short[] counter = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < length; i++) {
+            counter[s.charAt(i) - 97]++;
+            counter[t.charAt(i) - 97]--;
         }
-        return false;
+        for (short i : counter) {
+            if (i != 0) return false;
+        }
+        return true;
     }
 }
