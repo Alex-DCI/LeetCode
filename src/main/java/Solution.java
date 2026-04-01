@@ -1,52 +1,64 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Solution {
     static void main() {
-        System.out.println(new Solution().groupAnagrams(new String[] {"eat","tea","tan","ate","nat","bat"}).toString());
+        System.out.println(new Solution().romanToInt("MCMXCIV"));
     }
 
-    public List<List<String>> groupAnagrams(String[] strs) {
-        List<List<String>> result = new ArrayList<>();
-
-        if (strs.length == 0) return result;
-        if  (strs.length == 1) {
-            List<String> list = new ArrayList<>();
-            list.add(strs[0]);
-            result.add(list);
-            return result;
-        }
-
-        for (int i = 0; i < strs.length; i++) {
-            String current = strs[i];
-            if (current != null) {
-                List<String> list = new ArrayList<>();
-                list.add(current);
-                strs[i] = null;
-                for (int j = i + 1; j < strs.length; j++) {
-                    String next = strs[j];
-                    if (strs[j] != null && isAnagram(current, next)) {
-                        list.add(next);
-                        strs[j] = null;
-                    }
+    public int romanToInt(String s) {
+        short result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == 'I') {
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'V') {
+                    result += 4;
+                    i++;
+                    continue;
                 }
-                result.add(list);
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'X') {
+                    result += 9;
+                    i++;
+                    continue;
+                }
+                result ++;
+            }
+            if (c == 'V') {
+                result += 5;
+            }
+            if (c == 'X') {
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'L') {
+                    result += 40;
+                    i++;
+                    continue;
+                }
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'C') {
+                    result += 90;
+                    i++;
+                    continue;
+                }
+                result += 10;
+            }
+            if (c == 'L') {
+                result += 50;
+            }
+            if (c == 'C') {
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'D') {
+                    result += 400;
+                    i++;
+                    continue;
+                }
+                if (i != s.length() - 1 && s.charAt(i + 1) == 'M') {
+                    result += 900;
+                    i++;
+                    continue;
+                }
+                result += 100;
+            }
+            if (c == 'D') {
+                result += 500;
+            }
+            if (c == 'M') {
+                result += 1000;
             }
         }
         return result;
-    }
-
-    private boolean isAnagram(String s, String t) {
-        int length = s.length();
-        if (length != t.length()) return false;
-        byte[] counter = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        for (int i = 0; i < length; i++) {
-            counter[s.charAt(i) - 97]++;
-            counter[t.charAt(i) - 97]--;
-        }
-        for (byte i : counter) {
-            if (i != 0) return false;
-        }
-        return true;
     }
 }
