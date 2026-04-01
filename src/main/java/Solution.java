@@ -1,26 +1,52 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
     static void main() {
-        System.out.println(Arrays.toString(new Solution().twoSum(new int[]{2, 7, 11, 15}, 9)));
+        System.out.println(new Solution().groupAnagrams(new String[] {"eat","tea","tan","ate","nat","bat"}).toString());
     }
 
-    public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> resultMap = new HashMap<>();
-        resultMap.put(nums[0], 0);
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
 
-        for (int i = 1; i < nums.length; i++){
-            int complement = target - nums[i];
-
-            if(resultMap.containsKey(complement)) {
-                return new int[]{resultMap.get(complement), i};
-            }
-
-            resultMap.put(nums[i],i);
+        if (strs.length == 0) return result;
+        if  (strs.length == 1) {
+            List<String> list = new ArrayList<>();
+            list.add(strs[0]);
+            result.add(list);
+            return result;
         }
 
-        return new int[]{};
+        for (int i = 0; i < strs.length; i++) {
+            String current = strs[i];
+            if (current != null) {
+                List<String> list = new ArrayList<>();
+                list.add(current);
+                strs[i] = null;
+                for (int j = i + 1; j < strs.length; j++) {
+                    String next = strs[j];
+                    if (strs[j] != null && isAnagram(current, next)) {
+                        list.add(next);
+                        strs[j] = null;
+                    }
+                }
+                result.add(list);
+            }
+        }
+        return result;
+    }
+
+    private boolean isAnagram(String s, String t) {
+        int length = s.length();
+        if (length != t.length()) return false;
+        byte[] counter = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+        for (int i = 0; i < length; i++) {
+            counter[s.charAt(i) - 97]++;
+            counter[t.charAt(i) - 97]--;
+        }
+        for (byte i : counter) {
+            if (i != 0) return false;
+        }
+        return true;
     }
 }
